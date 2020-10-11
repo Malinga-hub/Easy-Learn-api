@@ -1,14 +1,16 @@
 <?php
 
-//headers
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
+//required packages and include classes and files
+require_once('../../../vendor/autoload.php');
+require_once('../../../util/includes/headers.php');
+require_once('../../../server/Database.php');
+require_once('../../../classes/User.php');
 
-//include classes
-include_once('../../../server/Database.php');
-include_once('../../../classes/User.php');
 include_once('../../../util/Sanitize.php');
+
+//header
+header('Access-Control-Allow-Methods: POST');
+
 
 //get db connection
 $conn = new Database();

@@ -6,9 +6,10 @@ require_once('../../../util/includes/headers.php');
 require_once('../../../server/Database.php');
 require_once('../../../classes/User.php');
 require_once('../../../util/includes/constants.php');
+
 include_once('../../../util/Sanitize.php');
 
-//use firebase jwt
+//use firebase php-jwt
 use Firebase\JWT\JWT;
 
 //headers
