@@ -5,7 +5,7 @@ require_once('../../../vendor/autoload.php');
 require_once('../../../util/includes/headers.php');
 require_once('../../../util/includes/constants.php');
 require_once('../../../server/Database.php');
-require_once('../../../classes/ReadingScreen.php');
+require_once('../../../classes/DataElement.php');
 
 include_once('../../../util/Sanitize.php');
 
@@ -21,7 +21,7 @@ $conn = new Database();
 $db = $conn->connectDB();
 
 //create objects 
-$readingScreen = new ReadingScreen($db);
+$dataElement = new DataElement($db);
 $sanitize = new Sanitize($db);
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -36,34 +36,39 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $jsonData = json_decode(file_get_contents('php://input'));
 
         //validate variables
-        if(!empty($jsonData->title)){
+        if(!empty($jsonData->value)){
 
              //sanitze json data
              $id = $sanitize->sanitize($jsonData->id);
-            $title = $sanitize->sanitize($jsonData->title);
+            $value = $sanitize->sanitize($jsonData->value);
+            $readingScreenId = $sanitize->sanitize($jsonData->readingScreenId);
 
                 
             //set data array
-            $data['record'] = array(
+            $data['params'] = array(
+                "value"=>$value,
                 "id"=>$id,
-                "title"=>$title
+                "reading_screen_id"=>$readingScreenId
             );
 
             //update reading screen
-            $result = $readingScreen->update($data['record']);
+            $result = $dataElement->update($data['params']);
 
             //check if create succesfull
             if(!is_null($result)){
 
-                if($result != -1){ 
-                    //repsonse
+                //check if record exits
+                if($result != -1){
+
                     if($result == 0){$result = 1;}
+                    //repsonse
                     http_response_code(200);
                     echo json_encode(array(
                         "msg"=>"success",
                         "code"=>http_response_code(200),
+                        "readingScreenId"=>$readingScreenId,
                         "recordId"=> $id,
-                        "response"=>"updated ".$result." record successfully"
+                        "response"=>"updated ".$result." record  successfully"
                     ));
                 }
                 else{
@@ -71,7 +76,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 }
             }
             else{
-                include_once('../../../util/server-responses/alreadyExists.php');
+                include_once('../../../util/server-responses/readingScreenNotFound.php');
             }
 
         }

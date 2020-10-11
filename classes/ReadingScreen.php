@@ -98,7 +98,7 @@ class ReadingScreen{
                 return $preparedStatement->affected_rows; //returns 1 if successfull
             }
             else{
-                return 0; //record dose not exist
+                return -1; //record dose not exist
             }
 
         }
@@ -115,6 +115,10 @@ class ReadingScreen{
 
             //check if record exists
             if($this->getOne(array("id"=>$this->id))->num_rows != 0){
+
+                //delete all data elements attached to the reading screen
+                $this->deleteReadingScreenDataElermets();
+
                 //query
                 $query  = "DELETE FROM ".$this->table_name."  WHERE id=?";
 
@@ -152,13 +156,19 @@ class ReadingScreen{
     //delete data elemets attached to reading screen
     public function deleteReadingScreenDataElermets(){
 
-        //query
+        //data element class 
+        include_once('DataElement.php');
+        $dataElement = new DataElement($this->conn);
         
-
-        //prepare
-
-        //response
+        //get all elements
+        $elements = $dataElement->getAll(array("reading_screen_id"=>$this->id));
+        
+        //delete elments
+        while($element = $elements->fetch_assoc()){
+            $query = "DELETE FROM ".$dataElement->getTableName()." WHERE id=? AND reading_screen_id=?";
+            $preparedStatement = $this->conn->prepare($query);
+            $preparedStatement->bind_param("ii", $element['id'], $this->id);
+            $preparedStatement->execute();
+        }
     }
-
-
 }

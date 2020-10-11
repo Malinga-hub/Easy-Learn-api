@@ -88,7 +88,7 @@ class DataElement{
 
             //prapre statement
             $preparedStatement = $this->conn->prepare($query);
-            $preparedStatement->bind_param("ss", $this->reading_screen_id, $this->value);
+            $preparedStatement->bind_param("is", $this->reading_screen_id, $this->value);
             $preparedStatement->execute();
 
             //return result
@@ -102,74 +102,81 @@ class DataElement{
     //update 
     public function update($data){
 
-       //set variables
+        //include scrren class and create object
+        include_once('ReadingScreen.php');
+        $readingScreen = new ReadingScreen($this->conn);
+
+        //set variables
         $this->id = $data['id'];
-        $this->title = $data['title'];
+        $this->value = $data['value'];
+        $this->reading_screen_id = $data['reading_screen_id'];
 
-        //check if title exists
-        if($this->getOneByTitle() == 0 ){
+        //check if screen id valid
+        if($readingScreen->getOne(array("id"=>$this->reading_screen_id))->num_rows > 0){
 
-            //check if record exists
-            if($this->getOne(array("id"=>$this->id))->num_rows != 0){
+            //check if data element id exists
+            if($this->getOne(array("id"=>$this->id, "reading_screen_id"=>$this->reading_screen_id))->num_rows > 0){
+
                 //query
-                $query  = "UPDATE ".$this->table_name." SET title=? WHERE id=?";
+                $query = "UPDATE ".$this->table_name." SET value=? WHERE id=? AND reading_screen_id=?";
 
-                //prepare
+                //prapre statement
                 $preparedStatement = $this->conn->prepare($query);
-                $preparedStatement->bind_param("si", $this->title, $this->id);
+                $preparedStatement->bind_param("sii", $this->value, $this->id, $this->reading_screen_id);
                 $preparedStatement->execute();
 
-                //response
-                return $preparedStatement->affected_rows; //returns 1 if successfull
+                //return result
+                return $preparedStatement->affected_rows;
             }
             else{
-                return 0; //record dose not exist
+                return -1; //record does not exist
             }
 
         }
         else{
-            return null; //title alreadly exists
+            return null; //reading screen does no exist
         }
     }
 
-        //update 
-        public function delete($data){
+        //udelete
+    public function delete($data){
 
-            //set variables
-             $this->id = $data['id'];
+        //include scrren class and create object
+        include_once('ReadingScreen.php');
+        $readingScreen = new ReadingScreen($this->conn);
 
-            //check if record exists
-            if($this->getOne(array("id"=>$this->id))->num_rows != 0){
+        //set variables
+        $this->id = $data['id'];
+        $this->reading_screen_id = $data['reading_screen_id'];
+
+        //check if screen id valid
+        if($readingScreen->getOne(array("id"=>$this->reading_screen_id))->num_rows > 0){
+
+             //check if data element id exists
+             if($this->getOne(array("id"=>$this->id, "reading_screen_id"=>$this->reading_screen_id))->num_rows > 0){
                 //query
-                $query  = "DELETE FROM ".$this->table_name."  WHERE id=?";
+                $query  = "DELETE FROM ".$this->table_name."  WHERE id=? AND reading_screen_id=?";
 
                 //prepare
                 $preparedStatement = $this->conn->prepare($query);
-                $preparedStatement->bind_param("i", $this->id);
+                $preparedStatement->bind_param("ii", $this->id, $this->reading_screen_id);
                 $preparedStatement->execute();
 
                 //response
                 return $preparedStatement->affected_rows; //returns 1 if successfull
-            }
-            else{
-                return 0; //record dose not exist
-            }
-     
+             }
+             else{
+                 return -1; //record does not exist
+             }
+        }
+        else{
+            return null; //screen id does not exist
+        }
+    }
+
+    //table name
+    public function getTableName(){
+        return $this->table_name;
     }
          
-     
-    //get record by title
-    public function getOneByTitle(){
-
-        //query
-        $query = "SELECT * FROM ".$this->table_name." WHERE title=?";
-
-        //prepare statement
-        $preparedStatement = $this->conn->prepare($query);
-        $preparedStatement->bind_param("s", $this->title);
-        $preparedStatement->execute();
-
-        //return result
-        return $preparedStatement->get_result()->num_rows;
-    }
 }
