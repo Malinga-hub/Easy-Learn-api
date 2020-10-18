@@ -54,7 +54,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
             //push record data into array
             array_push($data['record_result'], array(
                 "id"=>$recordResult['id'],
-                "title"=>$recordResult['title']
+                "title"=>$recordResult['title'],
+                "description"=>$recordResult['description']
             ));
 
             //reponse

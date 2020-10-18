@@ -41,12 +41,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
              //sanitze json data
              $id = $sanitize->sanitize($jsonData->id);
             $title = $sanitize->sanitize($jsonData->title);
+            $description = $sanitize->sanitize($jsonData->description);
 
                 
             //set data array
             $data['record'] = array(
                 "id"=>$id,
-                "title"=>$title
+                "title"=>$title,
+                "description"=>$description
             );
 
             //update reading screen

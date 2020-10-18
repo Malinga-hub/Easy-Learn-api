@@ -1,4 +1,6 @@
 <?php
-
-header('Access-Control-Allow-Origin: *');
+	
+//Set Access-Control-Allow-Origin with PHP
+//header('Access-Control-Allow-Origin: *');
 header("Content-Type: application/json; charset=UTF-8");
+?>

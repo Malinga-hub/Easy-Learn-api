@@ -1,8 +1,8 @@
 <?php
 
 //required packages and include classes and files
+include_once('../../../util/includes/headers.php');
 require_once('../../../vendor/autoload.php');
-require_once('../../../util/includes/headers.php');
 require_once('../../../server/Database.php');
 require_once('../../../classes/User.php');
 require_once('../../../util/includes/constants.php');

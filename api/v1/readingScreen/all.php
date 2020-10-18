@@ -1,16 +1,17 @@
 <?php
 
 //require pacakges  and classes
+include_once('../../../util/includes/headers.php');
+//required header
+header('Access-Control-Allow-Methods: GET');
+
 require_once('../../../vendor/autoload.php');
-require_once('../../../util/includes/headers.php');
 require_once('../../../util/includes/constants.php');
 require_once('../../../server/Database.php');
 require_once('../../../classes/ReadingScreen.php');
 
 include_once('../../../util/Sanitize.php');
 
-//required header
-header('Access-Control-Allow-Methods: GET');
 
 
 //use php-jwt
@@ -44,7 +45,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
             //push data to array
             array_push($data['records'], array(
                 "id"=>$record['id'],
-                "title"=>$record['title']
+                "title"=>$record['title'],
+                "description"=>$record['description']
             ));
         }
 
