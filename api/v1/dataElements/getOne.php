@@ -37,13 +37,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $jsonData = json_decode(file_get_contents('php://input'));
 
         //get and sanitize the id
-        $readingScreanId =$sanitize->sanitize($jsonData->readingScreenId); 
+        $exercise_id =$sanitize->sanitize($jsonData->exercise_id); 
         $id = $sanitize->sanitize($jsonData->id);
 
         //set data array
         $data['params'] = array(
             "id"=>$id,
-            "reading_screen_id"=>$readingScreanId
+            "exercise_id"=>$exercise_id
         );
 
         $data['record'] = array();
@@ -59,7 +59,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             //push record data into array
             array_push($data['record'], array(
                 "id"=>$recordResult['id'],
-                "readinsScreenId"=>$recordResult['reading_screen_id'],
+                "exercise_id"=>$recordResult['exercise_id'],
                 "value"=>$recordResult['value'],
                 "createdAt"=>date('d-m-y', strtotime($recordResult['createdAt']))
             ));

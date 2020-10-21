@@ -4,7 +4,7 @@ class DataElement{
 
     //variables
     private $id;
-    private $reading_screen_id;
+    private $exercise_id;
     private $value;
     private $createdAt;
 
@@ -15,7 +15,7 @@ class DataElement{
     function __construct($db)
     {
         //set variables
-        $this->table_name = "data_elements";
+        $this->table_name = "elements";
         $this->conn =$db;
     }
 
@@ -31,16 +31,16 @@ class DataElement{
         $readingScreen = new ReadingScreen($this->conn);
 
         //set variables
-        $this->reading_screen_id = $data['reading_screen_id'];
+        $this->exercise_id = $data['exercise_id'];
 
         //check if reading screen exists
-        if($readingScreen->getOne(array("id"=>$this->reading_screen_id))->num_rows != 0){
+        if($readingScreen->getOne(array("id"=>$this->exercise_id))->num_rows != 0){
             //query
-            $query = "SELECT * FROM ".$this->table_name." WHERE reading_screen_id=?";
+            $query = "SELECT * FROM ".$this->table_name." WHERE exercise_id=?";
 
             //preapre statement and return response
             $preparedStatement = $this->conn->prepare($query);
-            $preparedStatement->bind_param("i", $this->reading_screen_id);
+            $preparedStatement->bind_param("i", $this->exercise_id);
             $preparedStatement->execute();
 
             return $preparedStatement->get_result();
@@ -54,15 +54,15 @@ class DataElement{
     public function getOne($data){
 
         //set variables
-        $this->reading_screen_id = $data['reading_screen_id'];
+        $this->exercise_id = $data['exercise_id'];
         $this->id = $data['id'];
 
         //query
-        $query = "SELECT * FROM ".$this->table_name." WHERE id=? AND reading_screen_id=?";
+        $query = "SELECT * FROM ".$this->table_name." WHERE id=? AND exercise_id=?";
 
         //prepare statement
         $preparedStatement = $this->conn->prepare($query);
-        $preparedStatement->bind_param("ii", $this->id, $this->reading_screen_id);
+        $preparedStatement->bind_param("ii", $this->id, $this->exercise_id);
         $preparedStatement->execute();
 
         return $preparedStatement->get_result();
@@ -78,17 +78,17 @@ class DataElement{
 
         //set variables
         $this->value = $data['value'];
-        $this->reading_screen_id = $data['reading_screen_id'];
+        $this->exercise_id = $data['exercise_id'];
 
         //check if screen id valid
-        if($readingScreen->getOne(array("id"=>$this->reading_screen_id))->num_rows > 0){
+        if($readingScreen->getOne(array("id"=>$this->exercise_id))->num_rows > 0){
             
             //query
-            $query = "INSERT INTO ".$this->table_name."(reading_screen_id, value) VALUES(?,?)";
+            $query = "INSERT INTO ".$this->table_name."(exercise_id, value) VALUES(?,?)";
 
             //prapre statement
             $preparedStatement = $this->conn->prepare($query);
-            $preparedStatement->bind_param("is", $this->reading_screen_id, $this->value);
+            $preparedStatement->bind_param("is", $this->exercise_id, $this->value);
             $preparedStatement->execute();
 
             //return result
@@ -109,20 +109,20 @@ class DataElement{
         //set variables
         $this->id = $data['id'];
         $this->value = $data['value'];
-        $this->reading_screen_id = $data['reading_screen_id'];
+        $this->exercise_id = $data['exercise_id'];
 
         //check if screen id valid
-        if($readingScreen->getOne(array("id"=>$this->reading_screen_id))->num_rows > 0){
+        if($readingScreen->getOne(array("id"=>$this->exercise_id))->num_rows > 0){
 
             //check if data element id exists
-            if($this->getOne(array("id"=>$this->id, "reading_screen_id"=>$this->reading_screen_id))->num_rows > 0){
+            if($this->getOne(array("id"=>$this->id, "exercise_id"=>$this->exercise_id))->num_rows > 0){
 
                 //query
-                $query = "UPDATE ".$this->table_name." SET value=? WHERE id=? AND reading_screen_id=?";
+                $query = "UPDATE ".$this->table_name." SET value=? WHERE id=? AND exercise_id=?";
 
                 //prapre statement
                 $preparedStatement = $this->conn->prepare($query);
-                $preparedStatement->bind_param("sii", $this->value, $this->id, $this->reading_screen_id);
+                $preparedStatement->bind_param("sii", $this->value, $this->id, $this->exercise_id);
                 $preparedStatement->execute();
 
                 //return result
@@ -147,19 +147,19 @@ class DataElement{
 
         //set variables
         $this->id = $data['id'];
-        $this->reading_screen_id = $data['reading_screen_id'];
+        $this->exercise_id = $data['exercise_id'];
 
         //check if screen id valid
-        if($readingScreen->getOne(array("id"=>$this->reading_screen_id))->num_rows > 0){
+        if($readingScreen->getOne(array("id"=>$this->exercise_id))->num_rows > 0){
 
              //check if data element id exists
-             if($this->getOne(array("id"=>$this->id, "reading_screen_id"=>$this->reading_screen_id))->num_rows > 0){
+             if($this->getOne(array("id"=>$this->id, "exercise_id"=>$this->exercise_id))->num_rows > 0){
                 //query
-                $query  = "DELETE FROM ".$this->table_name."  WHERE id=? AND reading_screen_id=?";
+                $query  = "DELETE FROM ".$this->table_name."  WHERE id=? AND exercise_id=?";
 
                 //prepare
                 $preparedStatement = $this->conn->prepare($query);
-                $preparedStatement->bind_param("ii", $this->id, $this->reading_screen_id);
+                $preparedStatement->bind_param("ii", $this->id, $this->exercise_id);
                 $preparedStatement->execute();
 
                 //response

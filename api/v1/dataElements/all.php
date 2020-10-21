@@ -39,7 +39,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
         $data['params'] = array(
-            "reading_screen_id"=>$santize->sanitize($jsonData->readingScreenId)
+            "exercise_id"=>$santize->sanitize($jsonData->exercise_id)
         );
 
         //set records array
@@ -54,9 +54,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 //push data to array
                 array_push($data['records'], array(
                     "id"=>$record['id'],
-                    "readingScreenId"=>$record['reading_screen_id'],
+                    "exercise_id"=>$record['exercise_id'],
                     "value"=>$record['value'],
-                    "createdAt"=>date("d-m-y", strtotime($record['createdAt']))
+                    "createdAt"=>$record['createdAt']
                 ));
             }
     

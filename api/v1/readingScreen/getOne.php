@@ -25,7 +25,7 @@ $readingScreen = new ReadingScreen($db);
 $sanitize = new Sanitize($db);
 
 //get one
-if($_SERVER['REQUEST_METHOD'] == 'GET'){
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     //verify jwt token
     try{
@@ -33,8 +33,10 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         //decode jwt token
         JWT::decode(TOKEN, SECRET_KEY, ALGO);
 
-        //get and sanitize the id
-        $id = $sanitize->sanitize($_GET['id']);
+        //json data
+        $jsonData = json_decode(file_get_contents('php://input'));
+        $id = $sanitize->sanitize($jsonData->id);
+        
 
         //set data array
         $data['record'] = array(
@@ -54,8 +56,10 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
             //push record data into array
             array_push($data['record_result'], array(
                 "id"=>$recordResult['id'],
+                "type_id"=>$recordResult['type_id'],
                 "title"=>$recordResult['title'],
-                "description"=>$recordResult['description']
+                "description"=>$recordResult['description'],
+                "createdAt"=>$recordResult['createdAt']
             ));
 
             //reponse

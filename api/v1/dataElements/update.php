@@ -41,14 +41,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
              //sanitze json data
              $id = $sanitize->sanitize($jsonData->id);
             $value = $sanitize->sanitize($jsonData->value);
-            $readingScreenId = $sanitize->sanitize($jsonData->readingScreenId);
+            $exercise_id = $sanitize->sanitize($jsonData->exercise_id);
 
                 
             //set data array
             $data['params'] = array(
                 "value"=>$value,
                 "id"=>$id,
-                "reading_screen_id"=>$readingScreenId
+                "exercise_id"=>$exercise_id
             );
 
             //update reading screen
@@ -66,7 +66,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                     echo json_encode(array(
                         "msg"=>"success",
                         "code"=>http_response_code(200),
-                        "readingScreenId"=>$readingScreenId,
+                        "exercise_id"=>$exercise_id,
                         "recordId"=> $id,
                         "response"=>"updated ".$result." record  successfully"
                     ));

@@ -33,7 +33,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     try{
 
         //verify jwt
-        JWT::decode(TOKEN, SECRET_KEY, ALGO);
+       // JWT::decode(TOKEN, SECRET_KEY, ALGO);
 
         //set records array
         $data['records'] = array();
@@ -45,8 +45,10 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
             //push data to array
             array_push($data['records'], array(
                 "id"=>$record['id'],
+                "type_id"=>$record['type_id'],
                 "title"=>$record['title'],
-                "description"=>$record['description']
+                "description"=>$record['description'],
+                "createdAt"=>$record['createdAt']
             ));
         }
 

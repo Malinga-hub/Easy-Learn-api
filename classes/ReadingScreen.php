@@ -4,6 +4,7 @@ class ReadingScreen{
 
     //variables
     private $id;
+    private $type_id;
     private $title;
     private $description;
 
@@ -14,7 +15,7 @@ class ReadingScreen{
     function __construct($db)
     {
         //set variables
-        $this->table_name = "reading_screen";
+        $this->table_name = "exercises";
         $this->conn =$db;
     }
 
@@ -57,26 +58,26 @@ class ReadingScreen{
         //set variables
         $this->title = $data['title'];
         $this->description = $data['description'];
+        $this->type_id = $data['type_id'];
 
         if($this->getOneByTitle() ==  0){
         //query
-        if($this->description != ""){
+        if($this->description != null){
             /* query */
-            $query = "INSERT INTO ".$this->table_name."(title, description) VALUES(?,?)";
+            $query = "INSERT INTO ".$this->table_name."(type_id,title, description) VALUES(?,?,?)";
             //prapre statement
             $preparedStatement = $this->conn->prepare($query);
-            $preparedStatement->bind_param("ss", $this->title, $this->description);
-            $preparedStatement->execute();
+            $preparedStatement->bind_param("iss",$this->type_id, $this->title, $this->description);
         }
         else{
             /* query */
-            $query = "INSERT INTO ".$this->table_name."(title) VALUES(?)";
+            $query = "INSERT INTO ".$this->table_name."(type_id,title ) VALUES(?, ?)";
             //prapre statement
             $preparedStatement = $this->conn->prepare($query);
-            $preparedStatement->bind_param("s", $this->title);
-            $preparedStatement->execute();
+            $preparedStatement->bind_param("is",$this->type_id, $this->title );
         }
-
+        /* execute */
+        $preparedStatement->execute();
         //return result
         return $preparedStatement;
         }
@@ -92,6 +93,7 @@ class ReadingScreen{
        //set variables
         $this->id = $data['id'];
         $this->title = $data['title'];
+        $this->type_id = $data['type_id'];
         $this->description = $data['description'];
 
         //check if title exists
@@ -100,25 +102,25 @@ class ReadingScreen{
             //check if record exists
             if($this->getOne(array("id"=>$this->id))->num_rows != 0){
 
-                if($this->description != ""){
+                if($this->description != null){
                      //query
-                    $query  = "UPDATE ".$this->table_name." SET title=?, description=? WHERE id=?";
+                    $query  = "UPDATE ".$this->table_name." SET title=?, type_id=?, description=? WHERE id=?";
 
                     //prepare
                     $preparedStatement = $this->conn->prepare($query);
-                    $preparedStatement->bind_param("ssi", $this->title, $this->id, $this->description);
+                    $preparedStatement->bind_param("sisi", $this->title,$this->type_id, $this->description, $this->id);
                 }
                 else{
                     //query
-                    $query  = "UPDATE ".$this->table_name." SET title=?  WHERE id=?";
+                    $query  = "UPDATE ".$this->table_name." SET title=?, type_id=?  WHERE id=?";
 
                     //prepare
                     $preparedStatement = $this->conn->prepare($query);
-                    $preparedStatement->bind_param("si", $this->title, $this->id);
+                    $preparedStatement->bind_param("sii", $this->title,$this->type_id, $this->id);
                 }
 
+                /* execute */
                 $preparedStatement->execute();
-
                 //response
                 return $preparedStatement->affected_rows; //returns 1 if successfull
             }
@@ -130,11 +132,11 @@ class ReadingScreen{
         /* change description on exisiting record */
         else if($this->getOneByTitle() > 0  && $this->description != ''){
             //query
-            $query  = "UPDATE ".$this->table_name." SET description=?  WHERE id=?";
+            $query  = "UPDATE ".$this->table_name." SET description=?,type_id=?   WHERE id=?";
 
             //prepare
             $preparedStatement = $this->conn->prepare($query);
-            $preparedStatement->bind_param("si", $this->description, $this->id);
+            $preparedStatement->bind_param("sii", $this->description,$this->type_id,$this->id);
             $preparedStatement->execute();
 
              //response
@@ -145,8 +147,8 @@ class ReadingScreen{
         }
     }
 
-        //update 
-        public function delete($data){
+    //delete
+    public function delete($data){
 
             //set variables
              $this->id = $data['id'];
