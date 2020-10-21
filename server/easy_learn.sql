@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 12, 2020 at 10:34 AM
+-- Generation Time: Oct 21, 2020 at 06:11 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -24,44 +24,99 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `data_elements`
+-- Table structure for table `elements`
 --
 
-CREATE TABLE `data_elements` (
+CREATE TABLE `elements` (
   `id` int(11) NOT NULL,
-  `reading_screen_id` int(11) NOT NULL,
+  `exercise_id` int(11) NOT NULL,
   `value` varchar(255) NOT NULL,
   `createdAt` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `data_elements`
+-- Dumping data for table `elements`
 --
 
-INSERT INTO `data_elements` (`id`, `reading_screen_id`, `value`, `createdAt`) VALUES
-(1, 13, 'A', '2020-10-11 14:18:12'),
-(2, 13, 'B', '2020-10-11 14:18:12'),
-(3, 13, 'C', '2020-10-11 14:55:30');
+INSERT INTO `elements` (`id`, `exercise_id`, `value`, `createdAt`) VALUES
+(42, 52, 'A', '2020-10-21 17:11:34'),
+(43, 52, 'B', '2020-10-21 17:11:43'),
+(44, 52, 'C', '2020-10-21 17:11:49'),
+(45, 52, 'D', '2020-10-21 17:11:52'),
+(46, 52, 'E', '2020-10-21 17:11:59'),
+(47, 52, 'F', '2020-10-21 17:12:04'),
+(48, 52, 'G', '2020-10-21 17:12:10'),
+(49, 52, 'H', '2020-10-21 17:12:14');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reading_screen`
+-- Table structure for table `exercises`
 --
 
-CREATE TABLE `reading_screen` (
+CREATE TABLE `exercises` (
   `id` int(11) NOT NULL,
+  `type_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
+  `description` text NOT NULL DEFAULT 'Click start to begin exercise',
   `createdAt` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `reading_screen`
+-- Dumping data for table `exercises`
 --
 
-INSERT INTO `reading_screen` (`id`, `title`, `createdAt`) VALUES
-(13, 'aplhabet', '2020-10-11 13:07:49'),
-(18, 'test2 updated 2', '2020-10-11 13:43:53');
+INSERT INTO `exercises` (`id`, `type_id`, `title`, `description`, `createdAt`) VALUES
+(52, 1, 'Letter training', 'Identify letters', '2020-10-21 16:40:55'),
+(53, 2, 'Word training', '\'Click start to begin exercise\'', '2020-10-21 16:51:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `exercise_type`
+--
+
+CREATE TABLE `exercise_type` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `exercise_type`
+--
+
+INSERT INTO `exercise_type` (`id`, `title`, `description`, `createdAt`) VALUES
+(1, 'Letter Identification', '', '2020-10-21 09:09:30'),
+(2, 'Words identification', '', '2020-10-21 09:09:30'),
+(3, 'Oral comprehension', '', '2020-10-21 09:09:48');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `questions`
+--
+
+CREATE TABLE `questions` (
+  `id` int(11) NOT NULL,
+  `screen_id` int(11) NOT NULL,
+  `question` varchar(255) NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `question_answers`
+--
+
+CREATE TABLE `question_answers` (
+  `id` int(11) NOT NULL,
+  `question_id` int(11) NOT NULL,
+  `answer` text NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -89,15 +144,33 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `createdAt`) VALUES
 --
 
 --
--- Indexes for table `data_elements`
+-- Indexes for table `elements`
 --
-ALTER TABLE `data_elements`
+ALTER TABLE `elements`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `reading_screen`
+-- Indexes for table `exercises`
 --
-ALTER TABLE `reading_screen`
+ALTER TABLE `exercises`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `exercise_type`
+--
+ALTER TABLE `exercise_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `questions`
+--
+ALTER TABLE `questions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `question_answers`
+--
+ALTER TABLE `question_answers`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -111,16 +184,34 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `data_elements`
+-- AUTO_INCREMENT for table `elements`
 --
-ALTER TABLE `data_elements`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+ALTER TABLE `elements`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
--- AUTO_INCREMENT for table `reading_screen`
+-- AUTO_INCREMENT for table `exercises`
 --
-ALTER TABLE `reading_screen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+ALTER TABLE `exercises`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+
+--
+-- AUTO_INCREMENT for table `exercise_type`
+--
+ALTER TABLE `exercise_type`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `questions`
+--
+ALTER TABLE `questions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `question_answers`
+--
+ALTER TABLE `question_answers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`

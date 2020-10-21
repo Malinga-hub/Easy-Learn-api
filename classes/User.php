@@ -51,13 +51,20 @@ class User{
         //current user
         $currentUser = $this->getUserByEmail()->fetch_assoc();
 
+
         //return response
-        if(password_verify($this->password, $currentUser['password'])){
-            return $currentUser;
+        if($currentUser != null){
+            if(password_verify($this->password, $currentUser['password'])){
+                return $currentUser;
+            }
+            else{
+                return null;
+            }
         }
         else{
             return null;
         }
+
     }
 
     //get user by email

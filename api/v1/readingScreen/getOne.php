@@ -31,7 +31,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     try{
 
         //decode jwt token
-        JWT::decode(TOKEN, SECRET_KEY, ALGO);
+        //JWT::decode(TOKEN, SECRET_KEY, ALGO);
 
         //json data
         $jsonData = json_decode(file_get_contents('php://input'));
