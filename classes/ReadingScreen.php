@@ -25,7 +25,7 @@ class ReadingScreen{
     public function getAll(){
 
         //query
-        $query = "SELECT * FROM ".$this->table_name;
+        $query = "SELECT * FROM ".$this->table_name." ORDER BY createdAt DESC";
 
         //preapre statement and return response
         $preparedStatement = $this->conn->prepare($query);
@@ -201,11 +201,11 @@ class ReadingScreen{
         $dataElement = new DataElement($this->conn);
         
         //get all elements
-        $elements = $dataElement->getAll(array("reading_screen_id"=>$this->id));
+        $elements = $dataElement->getAll(array("exercise_id"=>$this->id));
         
         //delete elments
         while($element = $elements->fetch_assoc()){
-            $query = "DELETE FROM ".$dataElement->getTableName()." WHERE id=? AND reading_screen_id=?";
+            $query = "DELETE FROM ".$dataElement->getTableName()." WHERE id=? AND exercise_id=?";
             $preparedStatement = $this->conn->prepare($query);
             $preparedStatement->bind_param("ii", $element['id'], $this->id);
             $preparedStatement->execute();

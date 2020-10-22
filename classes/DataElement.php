@@ -36,7 +36,7 @@ class DataElement{
         //check if reading screen exists
         if($readingScreen->getOne(array("id"=>$this->exercise_id))->num_rows != 0){
             //query
-            $query = "SELECT * FROM ".$this->table_name." WHERE exercise_id=?";
+            $query = "SELECT * FROM ".$this->table_name." WHERE exercise_id=? ORDER BY createdAt DESC";
 
             //preapre statement and return response
             $preparedStatement = $this->conn->prepare($query);

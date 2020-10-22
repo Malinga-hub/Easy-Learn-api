@@ -8,7 +8,7 @@ header('Access-Control-Allow-Methods: GET');
 require_once('../../../vendor/autoload.php');
 require_once('../../../util/includes/constants.php');
 require_once('../../../server/Database.php');
-require_once('../../../classes/ReadingScreen.php');
+require_once('../../../classes/ExerciseType.php');
 
 include_once('../../../util/Sanitize.php');
 
@@ -22,6 +22,7 @@ $conn = new Database();
 $db = $conn->connectDB();
 
 //create objects
+$exerciseType = new ExerciseType($db);
 $santize = new Sanitize($db);
 
 
@@ -37,11 +38,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         //set records array
         $data['records'] = array();
 
-        //get all and return response
-        $query = "SELECT * FROM exercise_type";
-        $preparedStatement = $db->prepare($query);
-        $preparedStatement->execute();
-        $result = $preparedStatement->get_result();
+        $result = $exerciseType->getAll();
 
         while($record = $result->fetch_assoc()){
             //push data to array
@@ -49,6 +46,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                 "id"=>$record['id'],
                 "title"=>$record['title'],
                 "description"=>$record['description'],
+                "isQuestions"=>$record['isQuestions'],
                 "createdAt"=>$record['createdAt']
             ));
         }
