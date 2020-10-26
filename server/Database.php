@@ -17,7 +17,7 @@ class Database {
         // $this->password ="";
         // $this->db="easy_learn";
 
-        $this->host = "fdb30.awardspace.net";
+        $this->host = "fdb30.awardspace.net:3306";
         $this->username = "3629486_easylearn";
         $this->password ="*PcpugMt8oP#A!Op";
         $this->db="3629486_easylearn";
