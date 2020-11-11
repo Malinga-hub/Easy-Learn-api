@@ -50,6 +50,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $expiresAt = $issuedAt + (60*60) *60; //for a day
             $data['user_data'] = array(
                 "id"=>$loginUser['id'],
+                "username"=>$loginUser['username'],
                 "email"=>$loginUser['email'],
                 "createdAt"=>date('d-m-y', strtotime($loginUser['createdAt']))
             );
