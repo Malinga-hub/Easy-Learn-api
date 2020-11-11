@@ -32,14 +32,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     try{
 
         //verify jwt
-        //JWT::decode(TOKEN, SECRET_KEY, ALGO);
+        $decodedJWT =  JWT::decode(TOKEN, SECRET_KEY, ALGO);
+        $user_id = $decodedJWT->data->id;
 
         //get json data
         $jsonData = json_decode(file_get_contents('php://input'));
 
 
         $data['params'] = array(
-            "exercise_id"=>$santize->sanitize($jsonData->exercise_id)
+            "exercise_id"=>$santize->sanitize($jsonData->exercise_id),
+            "user_id"=>$user_id
         );
 
         //set records array

@@ -33,18 +33,24 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     try{
 
         //verify jwt
-       // JWT::decode(TOKEN, SECRET_KEY, ALGO);
+       $decodedJWT =  JWT::decode(TOKEN, SECRET_KEY, ALGO);
 
-        //set records array
+       $user_id = $decodedJWT->data->id;
+
+        //set params and records array
+        $data['params'] = array(
+            "user_id"=>$user_id
+        );
         $data['records'] = array();
 
         //get all and return response
-        $result = $readingScreen->getAll();
+        $result = $readingScreen->getAll($data['params']);
 
         while($record = $result->fetch_assoc()){
             //push data to array
             array_push($data['records'], array(
                 "id"=>$record['id'],
+                "user_id"=>$record['user_id'],
                 "type_id"=>$record['type_id'],
                 "title"=>$record['title'],
                 "description"=>$record['description'],

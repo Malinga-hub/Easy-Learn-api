@@ -31,7 +31,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     try{
 
         //decode jwt token
-        //JWT::decode(TOKEN, SECRET_KEY, ALGO);
+        $decodedJWT = JWT::decode(TOKEN, SECRET_KEY, ALGO);
+        $user_id = $decodedJWT->data->id;
 
         //json data
         $jsonData = json_decode(file_get_contents('php://input'));
@@ -40,7 +41,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         //set data array
         $data['record'] = array(
-            "id"=>$id
+            "id"=>$id,
+            "user_id"=>$user_id
         );
 
         $data['record_result'] = array();
@@ -56,6 +58,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             //push record data into array
             array_push($data['record_result'], array(
                 "id"=>$recordResult['id'],
+                "user_id"=>$recordResult['user_id'],
                 "type_id"=>$recordResult['type_id'],
                 "title"=>$recordResult['title'],
                 "description"=>$recordResult['description'],

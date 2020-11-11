@@ -82,4 +82,68 @@ class User{
         return $preparedStatement->get_result();
     }
 
+    //change password
+    public function changePassword($data){
+
+        /* change password */
+        $this->id = $data['id'];
+        $this->password = $data['password'];
+        
+        /* query */
+        $query = "UPDATE ".$this->table_name." SET password=? WHERE id=?";
+
+        /* prepare query */
+        $preparedStatement = $this->conn->prepare($query);
+        $preparedStatement->bind_param("si", $this->password, $this->id);
+        $preparedStatement->execute();
+
+        // print_r($preparedStatement);
+
+        return $preparedStatement;
+    }
+
+    /* delete user */
+    public function deleteAccount($data){
+
+        /* set variables */
+        $this->id = $data['id'];
+
+        $result = $this->getById();
+
+        if($result->num_rows > 0){
+
+            include_once ('ReadingScreen.php');
+            $readingScreen = new ReadingScreen($this->conn);
+
+            $readingScreen->deleteByUserId(array("user_id"=>$this->id));
+
+            /* delete user */
+            $query="DELETE FROM ".$this->table_name." WHERE id=?";
+            $preparedStatement=$this->conn->prepare($query);
+            $preparedStatement->bind_param("i", $this->id);
+            $preparedStatement->execute();
+
+            return $preparedStatement;
+
+        }
+        else{
+            return null;
+        }
+    }
+
+    /* get by id */
+    private function getById(){
+
+        /* query */
+        $query = "SELECT * FROM users WHERE id=?";
+        $preparedStatement = $this->conn->prepare($query);
+        $preparedStatement->bind_param("i", $this->id);
+        $preparedStatement->execute();
+
+        return $preparedStatement->get_result();
+    }
+
+    /* delete all reading screens */
+
+
 }

@@ -30,7 +30,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     try{
 
         //decode jwt
-        //JWT::decode(TOKEN, SECRET_KEY, ALGO);
+        $decodedJWT =  JWT::decode(TOKEN, SECRET_KEY, ALGO);
+        $user_id = $decodedJWT->data->id;
 
         //get json data
         $jsonData = json_decode(file_get_contents('php://input'));
@@ -43,7 +44,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         //set data array
         $data['params'] = array(
             "id"=>$id,
-            "exercise_id"=>$exercise_id
+            "exercise_id"=>$exercise_id,
+            "user_id"=>$user_id
         );
 
         //delete reading screen

@@ -82,7 +82,7 @@ CREATE TABLE `exercises` (
   `id` int(11) NOT NULL,
   `type_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `description` text NOT NULL DEFAULT 'Click start to begin exercise',
+  `description` text NULL,
   `createdAt` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

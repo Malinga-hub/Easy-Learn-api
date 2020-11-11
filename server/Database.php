@@ -12,15 +12,10 @@ class Database {
 
     //connect to db and return db or response
     public function connectDB(){
-        // $this->host = "localhost";
-        // $this->username = "root";
-        // $this->password ="";
-        // $this->db="easy_learn";
-
-        $this->host = "fdb30.awardspace.net:3306";
-        $this->username = "3629486_easylearn";
-        $this->password ="*PcpugMt8oP#A!Op";
-        $this->db="3629486_easylearn";
+        $this->host = "localhost";
+        $this->username = "root";
+        $this->password ="";
+        $this->db="easy_learn";
 
         $this->conn = mysqli_connect($this->host, $this->username, $this->password, $this->db);
 
@@ -34,6 +29,6 @@ class Database {
     }
 }
 
-//test connection
- $test = new Database();
- print_r($test->connectDB());
+// //test connection
+//  $test = new Database();
+//  print_r($test->connectDB());

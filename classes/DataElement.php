@@ -34,7 +34,7 @@ class DataElement{
         $this->exercise_id = $data['exercise_id'];
 
         //check if reading screen exists
-        if($readingScreen->getOne(array("id"=>$this->exercise_id))->num_rows != 0){
+        if($readingScreen->getOne(array("id"=>$this->exercise_id, "user_id"=>$data['user_id']))->num_rows != 0){
             //query
             $query = "SELECT * FROM ".$this->table_name." WHERE exercise_id=? ORDER BY createdAt DESC";
 
@@ -81,7 +81,7 @@ class DataElement{
         $this->exercise_id = $data['exercise_id'];
 
         //check if screen id valid
-        if($readingScreen->getOne(array("id"=>$this->exercise_id))->num_rows > 0){
+        if($readingScreen->getOne(array("id"=>$this->exercise_id, "user_id"=>$data['user_id']))->num_rows > 0){
             
             //query
             $query = "INSERT INTO ".$this->table_name."(exercise_id, value) VALUES(?,?)";
@@ -112,7 +112,7 @@ class DataElement{
         $this->exercise_id = $data['exercise_id'];
 
         //check if screen id valid
-        if($readingScreen->getOne(array("id"=>$this->exercise_id))->num_rows > 0){
+        if($readingScreen->getOne(array("id"=>$this->exercise_id, "user_id"=>$data['user_id']))->num_rows > 0){
 
             //check if data element id exists
             if($this->getOne(array("id"=>$this->id, "exercise_id"=>$this->exercise_id))->num_rows > 0){
@@ -150,7 +150,7 @@ class DataElement{
         $this->exercise_id = $data['exercise_id'];
 
         //check if screen id valid
-        if($readingScreen->getOne(array("id"=>$this->exercise_id))->num_rows > 0){
+        if($readingScreen->getOne(array("id"=>$this->exercise_id, "user_id"=>$data['user_id']))->num_rows > 0){
 
              //check if data element id exists
              if($this->getOne(array("id"=>$this->id, "exercise_id"=>$this->exercise_id))->num_rows > 0){
