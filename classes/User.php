@@ -37,9 +37,9 @@ class User{
         //prepare and execute query
         $preparedStatement = $this->conn->prepare($query);
         $preparedStatement->bind_param("sss", $this->username, $this->email, $this->password);
+        $preparedStatement->execute();
 
-        //return response
-        return $preparedStatement->execute();
+        return $preparedStatement;
     }
 
     //login

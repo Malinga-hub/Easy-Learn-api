@@ -53,6 +53,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     echo json_encode(array(
         "msg"=>"success",
         "code"=>http_response_code(200),
+        "user_id"=>$result->insert_id,
         "response"=> "user registered.",
     ));
 

@@ -44,7 +44,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 "msg"=>"success",
                 "code"=>http_response_code(200),
                 "userId"=>$user_id,
-                "response"=>"Successfully deleted user account with ID ".$result->affected_rows
+                "response"=>"Successfully deleted user account"
             ));
         }
         else{
