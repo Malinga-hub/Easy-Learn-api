@@ -33,35 +33,35 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     //check if email valid
     if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-    //encrypt password
-    $password = password_hash($password, PASSWORD_BCRYPT);
+        //encrypt password
+        $password = password_hash($password, PASSWORD_BCRYPT);
 
-    //create set data array
-    $data['user'] = array(
-        "username"=>$username,
-        "email"=>$email,
-        "password"=>$password
-    );
+        //create set data array
+        $data['user'] = array(
+            "username"=>$username,
+            "email"=>$email,
+            "password"=>$password
+        );
 
-    //register user and return response
-    $result = $user->register($data['user']);
+        //register user and return response
+        $result = $user->register($data['user']);
 
-    //response
-    if($result){
+        //response
+        if($result != null){
 
-    http_response_code(200);
-    echo json_encode(array(
-        "msg"=>"success",
-        "code"=>http_response_code(200),
-        "user_id"=>$result->insert_id,
-        "response"=> "user registered.",
-    ));
+        http_response_code(200);
+        echo json_encode(array(
+            "msg"=>"success",
+            "code"=>http_response_code(200),
+            "user_id"=>$result->insert_id,
+            "response"=> "user registered.",
+        ));
 
 
-    }
-    else{
-        include_once('../../../util/server-responses/internalServerError.php');
-    }
+        }
+        else{
+            include_once('../../../util/server-responses/alreadyExists.php');
+        }
 
     }
     else{

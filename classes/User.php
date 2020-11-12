@@ -30,16 +30,22 @@ class User{
         $this->username = $data['username'];
         $this->email = $data['email'];
         $this->password = $data['password'];
+
+        if($this->getUserByEmail()->num_rows != 0){
+            //query
+            $query = "INSERT INTO ".$this->table_name."(username, email, password) VALUES(?,?,?)";
+
+            //prepare and execute query
+            $preparedStatement = $this->conn->prepare($query);
+            $preparedStatement->bind_param("sss", $this->username, $this->email, $this->password);
+            $preparedStatement->execute();
+
+            return $preparedStatement;
+        }
+        else{
+            return null;
+        }
         
-        //query
-        $query = "INSERT INTO ".$this->table_name."(username, email, password) VALUES(?,?,?)";
-
-        //prepare and execute query
-        $preparedStatement = $this->conn->prepare($query);
-        $preparedStatement->bind_param("sss", $this->username, $this->email, $this->password);
-        $preparedStatement->execute();
-
-        return $preparedStatement;
     }
 
     //login
@@ -68,7 +74,7 @@ class User{
     }
 
     //get user by email
-    private function getUserByEmail(){
+    public function getUserByEmail(){
         
         //querry
         $query = "SELECT * FROM  ".$this->table_name." WHERE email=?";
@@ -131,6 +137,11 @@ class User{
         }
     }
 
+    /* set email */
+    public function setEmail($data){
+        $this->email = $data['email'];
+    }
+
     /* get by id */
     private function getById(){
 
@@ -142,8 +153,5 @@ class User{
 
         return $preparedStatement->get_result();
     }
-
-    /* delete all reading screens */
-
 
 }
