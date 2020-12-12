@@ -27,11 +27,10 @@ class ReadingScreen{
 
         $this->user_id = $data['user_id'];
         //query
-        $query = "SELECT * FROM ".$this->table_name." WHERE user_id=? ORDER BY createdAt DESC";
+        $query = "SELECT * FROM ".$this->table_name." ORDER BY createdAt DESC";
 
         //preapre statement and return response
         $preparedStatement = $this->conn->prepare($query);
-        $preparedStatement->bind_param("i", $this->user_id);
         $preparedStatement->execute();
 
         return $preparedStatement->get_result();
@@ -45,11 +44,11 @@ class ReadingScreen{
         $this->user_id = $data['user_id'];
 
         // //query
-        $query = "SELECT * FROM ".$this->table_name." WHERE id=? AND user_id=?";
+        $query = "SELECT * FROM ".$this->table_name." WHERE id=? ";
 
         //prepare statement
         $preparedStatement = $this->conn->prepare($query);
-        $preparedStatement->bind_param("ii", $this->id, $this->user_id);
+        $preparedStatement->bind_param("i", $this->id);
         $preparedStatement->execute();
 
         return $preparedStatement->get_result();
@@ -69,17 +68,17 @@ class ReadingScreen{
         //query
         if($this->description != null){
             /* query */
-            $query = "INSERT INTO ".$this->table_name."(user_id,type_id,title, description) VALUES(?,?,?,?)";
+            $query = "INSERT INTO ".$this->table_name."(type_id,title, description) VALUES(?,?,?)";
             //prapre statement
             $preparedStatement = $this->conn->prepare($query);
-            $preparedStatement->bind_param("iiss",$this->$user_id,$this->type_id, $this->title, $this->description);
+            $preparedStatement->bind_param("iss",$this->type_id, $this->title, $this->description);
         }
         else{
             /* query */
-            $query = "INSERT INTO ".$this->table_name."(user_id,type_id,title ) VALUES(?,?,?)";
+            $query = "INSERT INTO ".$this->table_name."(type_id,title ) VALUES(?,?)";
             //prapre statement
             $preparedStatement = $this->conn->prepare($query);
-            $preparedStatement->bind_param("iis",$this->user_id,$this->type_id, $this->title );
+            $preparedStatement->bind_param("is",$this->type_id, $this->title );
         }
         /* execute */
         $preparedStatement->execute();
@@ -110,19 +109,19 @@ class ReadingScreen{
 
                 if($this->description != null){
                      //query
-                    $query  = "UPDATE ".$this->table_name." SET title=?, type_id=?, description=? WHERE id=? AND user_id=?";
+                    $query  = "UPDATE ".$this->table_name." SET title=?, type_id=?, description=? WHERE id=?";
 
                     //prepare
                     $preparedStatement = $this->conn->prepare($query);
-                    $preparedStatement->bind_param("sisii", $this->title,$this->type_id, $this->description, $this->id, $this->user_id);
+                    $preparedStatement->bind_param("sisi", $this->title,$this->type_id, $this->description, $this->id);
                 }
                 else{
                     //query
-                    $query  = "UPDATE ".$this->table_name." SET title=?, type_id=?  WHERE id=? AND user_id=?";
+                    $query  = "UPDATE ".$this->table_name." SET title=?, type_id=?  WHERE id=?";
 
                     //prepare
                     $preparedStatement = $this->conn->prepare($query);
-                    $preparedStatement->bind_param("siii", $this->title,$this->type_id, $this->id, $this->user_id);
+                    $preparedStatement->bind_param("sii", $this->title,$this->type_id, $this->id);
                 }
 
                 /* execute */
@@ -138,11 +137,11 @@ class ReadingScreen{
         /* change description on exisiting record */
         else if($this->getOneByTitle() > 0  && $this->description != ''){
             //query
-            $query  = "UPDATE ".$this->table_name." SET description=?,type_id=?   WHERE id=? AND user_id=?";
+            $query  = "UPDATE ".$this->table_name." SET description=?,type_id=?   WHERE id=?";
 
             //prepare
             $preparedStatement = $this->conn->prepare($query);
-            $preparedStatement->bind_param("siii", $this->description,$this->type_id,$this->id, $this->user_id);
+            $preparedStatement->bind_param("sii", $this->description,$this->type_id,$this->id);
             $preparedStatement->execute();
 
              //response
@@ -158,7 +157,7 @@ class ReadingScreen{
 
             //set variables
              $this->id = $data['id'];
-             $this->user_id = $data['user_id'];
+//             $this->user_id = $data['user_id'];
 
              $result = $this->getOne(array("id"=>$this->id, "user_id"=>$this->user_id));
 
@@ -169,11 +168,11 @@ class ReadingScreen{
                 $this->deleteReadingScreenDataElermets();
 
                 //query
-                $query  = "DELETE FROM ".$this->table_name."  WHERE id=? AND user_id=?";
+                $query  = "DELETE FROM ".$this->table_name."  WHERE id=? ";
 
                 //prepare
                 $preparedStatement = $this->conn->prepare($query);
-                $preparedStatement->bind_param("ii", $this->id, $this->user_id);
+                $preparedStatement->bind_param("i", $this->id);
                 $preparedStatement->execute();
 
                 //response

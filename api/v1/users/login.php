@@ -51,6 +51,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $data['user_data'] = array(
                 "id"=>$loginUser['id'],
                 "username"=>$loginUser['username'],
+                "role_id"=>$loginUser['role_id'],
                 "email"=>$loginUser['email'],
                 "createdAt"=>date('d-m-y', strtotime($loginUser['createdAt']))
             );

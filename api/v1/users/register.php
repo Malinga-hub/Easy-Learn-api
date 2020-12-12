@@ -28,6 +28,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     //sanitize data
     $username = $sanitize->sanitize($jsonData->username);
+    $role_id = $sanitize->sanitize($jsonData->role_id);
     $email = $sanitize->sanitize($jsonData->email);
     $password = $sanitize->sanitize($jsonData->password);
 
@@ -39,9 +40,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         //create set data array
         $data['user'] = array(
             "username"=>$username,
+            "role_id"=>$role_id,
             "email"=>$email,
             "password"=>$password
         );
+
+
 
         //register user and return response
         $result = $user->register($data['user']);

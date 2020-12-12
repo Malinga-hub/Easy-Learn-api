@@ -4,6 +4,7 @@ class User{
 
     //variables
     private $id;
+    private $role_id;
     private $username;
     private $email;
     private $password;
@@ -28,16 +29,18 @@ class User{
 
         //set variables
         $this->username = $data['username'];
+        $this->role_id = $data['role_id'];
         $this->email = $data['email'];
         $this->password = $data['password'];
 
-        if($this->getUserByEmail()->num_rows != 0){
+
+        if($this->getUserByEmail()->num_rows == 0){
             //query
-            $query = "INSERT INTO ".$this->table_name."(username, email, password) VALUES(?,?,?)";
+            $query = "INSERT INTO ".$this->table_name."(role_id,username, email, password) VALUES(?,?,?,?)";
 
             //prepare and execute query
             $preparedStatement = $this->conn->prepare($query);
-            $preparedStatement->bind_param("sss", $this->username, $this->email, $this->password);
+            $preparedStatement->bind_param("isss", $this->role_id,$this->username, $this->email, $this->password);
             $preparedStatement->execute();
 
             return $preparedStatement;
